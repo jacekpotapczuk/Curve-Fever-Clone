@@ -2,25 +2,11 @@
 
 public class Head : MonoBehaviour
 {
+    private float angleChangeSpeed = 0.5f;
 
     private float angle;
-
-    [SerializeField]
-    private float speedDefault = 20f;
-
-    public float speedActual = 20f;
-
-    [SerializeField]
-    private float angleChangeSpeed = 0.05f;
-
-    [SerializeField]
-    private Player player;
-
-    public bool isImmortal = true;
-
-    private Vector3 lastPosition;
-
-    private bool detectCollision = true;
+    private float speed;
+    private bool isImmortal;
 
     public float Radius
     {
@@ -30,38 +16,20 @@ public class Head : MonoBehaviour
         }
     }
 
-    public Vector3 ActualPosition
+    public void UpdatePosition(float input)
     {
-        get
-        {
-            return transform.localPosition;
-        }
-    }
+        angle -= input * angleChangeSpeed * speed * Time.deltaTime;
 
-    public Vector3 LastPosition
-    {
-        get
-        {
-            if (lastPosition == null)
-            {
-                Debug.Log("Jestem w if last pos"); // TODO: wywalic jak useless
-                return ActualPosition;
-            }
-               
-            return lastPosition;
-        }
-    }
-    private void Update()
-    {
-        float horizontalInput = Input.GetAxisRaw("Horizontal");
-
-        angle -= horizontalInput * angleChangeSpeed;
-
-        float x = speedActual * Mathf.Cos(angle) * Time.deltaTime;
-        float y = speedActual * Mathf.Sin(angle) * Time.deltaTime;
+        float x = speed * Mathf.Cos(angle) * Time.deltaTime;
+        float y = speed * Mathf.Sin(angle) * Time.deltaTime;
 
         transform.localPosition += new Vector3(x, y, 0f);
-        lastPosition = ActualPosition;
+    }
+
+    public void ChangeColor(Color color)
+    {
+        SpriteRenderer sr = gameObject.GetComponent<SpriteRenderer>();
+        sr.color = color;
     }
 
     public void ChangeThickness(float thickness)
@@ -69,10 +37,21 @@ public class Head : MonoBehaviour
         transform.localScale = new Vector3(thickness, thickness, thickness);
     }
 
+    public void SetImmortality(bool isImmortal)
+    {
+        this.isImmortal = isImmortal;
+    }
+
+    public void SetSpeed(float speed)
+    {
+        this.speed = speed;
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (isImmortal)
+            return;
+
         Debug.Log("Głowa kolizja");
-        Debug.Break();
-        
     }
 }

@@ -51,7 +51,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 9a8661010c8dd694ba439ac43658b501, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -156,8 +156,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61d65c4b12997ac4abccf84d8da759a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minGapLineRenderer: 0.2
-  minGapEdgeCollider: 0.4
   tail: {fileID: 0}
 --- !u!50 &1357255586013929961
 Rigidbody2D:

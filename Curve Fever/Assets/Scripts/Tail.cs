@@ -12,25 +12,57 @@ public class Tail : MonoBehaviour
     private List<TailPart> tailParts;
     private TailPart actTailPart;
 
+    private float size = 0.2f;
+
+    private Color color;
 
     private void Awake()
     {
         tailParts = new List<TailPart>();
-        NewTailPart();
     }
 
-    private void NewTailPart()
+    public void UpdateTail(Vector3 actPosition)
     {
         if (actTailPart != null)
-            actTailPart.End();
-        actTailPart = Instantiate(tailPartPrefab, transform).GetComponent<TailPart>();
-        actTailPart.tail = this;
-        tailParts.Add(actTailPart);
+            actTailPart.UpdateTailPart(actPosition);
     }
 
-    public void ChangeThickness(float size)
+    public void ChangeColor(Color color)
     {
-        NewTailPart();
+        this.color = color;
+        if (actTailPart != null)
+        {
+            actTailPart.GetComponent<LineRenderer>().SetColors(color, color);
+        }
+    }
+
+    public void ChangeThickness(Vector3 actPositon, float size)
+    {
+        this.size = size;
+        if (actTailPart != null)
+            NewTailPart(actPositon);
+    }
+
+    public void StartDrawing(Vector3 actPositon)
+    {
+        NewTailPart(actPositon);
+    }
+
+    public void StopDrawing(Vector3 actPosition)
+    {
+        if (actTailPart != null)
+            actTailPart.End(actPosition);
+        actTailPart = null;
+    }
+
+    private void NewTailPart(Vector3 actPosition)
+    {
+        if (actTailPart != null)
+            actTailPart.End(actPosition);
+        actTailPart = Instantiate(tailPartPrefab, transform).GetComponent<TailPart>();
+        actTailPart.tail = this;
+        actTailPart.GetComponent<LineRenderer>().SetColors(color, color);
         actTailPart.SetThickness(size);
+        tailParts.Add(actTailPart);
     }
 }

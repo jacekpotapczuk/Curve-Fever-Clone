@@ -18,42 +18,38 @@ public class TailPart : MonoBehaviour
     private Queue<Vector2> pointsEdgeColliderTemp;
     private Vector2 lastPointEdgeCollider;
 
-
-    private float minGapLineRenderer = 0.3f;
+    private float minGapLineRenderer = 0.15f;
     private float minGapEdgeCollider = 0.5f;
 
     public Tail tail;
 
     private void Awake()
     {
+
         lineRenderer = transform.GetComponent<LineRenderer>();
         edgeCollider = transform.GetComponent<EdgeCollider2D>();
 
         lineRenderer.numCapVertices = 5;
         lineRenderer.numCornerVertices = 5;
 
-        //edgeCollider.edgeRadius = 0.5f;  //TODO: zobaczyc co to
-
         pointsLineRenderer = new List<Vector2>();
         pointsEdgeCollider = new List<Vector2>();
         pointsEdgeColliderTemp = new Queue<Vector2>();
     }
 
-    private void Update()
+    public void UpdateTailPart(Vector3 actPosition)
     {
         if (isActive)
         {
-            UpdateLineRenderer();
-            UpdateEdgeColliderTemp();
+            UpdateLineRenderer(actPosition);
+            UpdateEdgeColliderTemp(actPosition);
         }
         if (pointsEdgeColliderTemp.Count > 0)
-            UpdateEdgeCollider();
+            UpdateEdgeCollider(actPosition);
     }
 
-    private void UpdateLineRenderer()
+    private void UpdateLineRenderer(Vector3 actPosition)
     {
-        Vector3 actPosition = tail.head.transform.position;
-
         if (pointsLineRenderer.Count < 2)
         {
             pointsLineRenderer.Add(actPosition);
@@ -71,11 +67,8 @@ public class TailPart : MonoBehaviour
         }
     }
 
-    private void UpdateEdgeColliderTemp()
+    private void UpdateEdgeColliderTemp(Vector3 actPosition)
     {
-        Vector3 actPosition = tail.head.transform.position;
-
-        // first add points to temp queue to prevent collisions with own tail
         if (pointsEdgeCollider.Count < 2)
         {
             pointsEdgeColliderTemp.Enqueue(actPosition);
@@ -92,10 +85,8 @@ public class TailPart : MonoBehaviour
             }
         }
     }
-    private void UpdateEdgeCollider()
+    private void UpdateEdgeCollider(Vector3 actPosition)
     {
-        Vector3 actPosition = tail.head.transform.position;
-
         while (pointsEdgeColliderTemp.Count > 0 && Vector3.Distance(pointsEdgeColliderTemp.Peek(), actPosition) > edgeCollider.edgeRadius + tail.head.Radius + 0.1f) 
         {
             //Debug.Log("Dodaje w " + gameObject.GetComponent<LineRenderer>().widthMultiplier + 
@@ -109,10 +100,9 @@ public class TailPart : MonoBehaviour
             edgeCollider.points = pointsEdgeCollider.ToArray();
     }
 
-    public void End()
+    public void End(Vector3 actPosition)
     {
         isActive = false;
-        Vector3 actPosition = tail.head.transform.position;
         
         pointsLineRenderer.Add(actPosition);
         lineRenderer.positionCount = pointsLineRenderer.Count;
@@ -123,25 +113,7 @@ public class TailPart : MonoBehaviour
 
     public void SetThickness(float size)
     {
-        //this.size = size;  //TODO: zrobic to lepiej
         lineRenderer.widthMultiplier = size;
         edgeCollider.edgeRadius = size / 2f;
     }
-
-    //private void Restart()
-    //{
-
-    //    pointsLineRenderer = new List<Vector2>();
-    //    pointsEdgeCollider = new List<Vector2>();
-    //    pointsEdgeColliderTemp = new Queue<Vector2>();
-
-    //    Vector2[] arr = new Vector2[2];
-    //    arr[0] = new Vector2(-999f, -999f);
-    //    arr[1] = new Vector2(-999f, -998f);
-    //    edgeCollider.points = arr;
-
-    //    lineRenderer.positionCount = 0;
-
-    //}
-
 }
