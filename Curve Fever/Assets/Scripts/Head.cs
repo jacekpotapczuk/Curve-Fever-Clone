@@ -49,9 +49,14 @@ public class Head : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (isImmortal)
-            return;
+        //if (isImmortal)
+        //    return;
 
-        Debug.Log("Głowa kolizja");
+        Debug.Log("Głowa kolizja trigger");
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        Debug.Log("Głowa kolizja collision");
     }
 }

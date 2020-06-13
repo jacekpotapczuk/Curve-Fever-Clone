@@ -4,8 +4,9 @@ public class Player : MonoBehaviour
 {
     private Head head;
     private Tail tail;
+    private PowerUpTimerControler powerUpTimerControler;
     private int thickness = 2;
-    private int speed = 5;
+    private int speed = 3;
 
     private const float thicknessRatioLineRenderer = 0.1f;
     private const float thicknessRatioHead = 0.8f;
@@ -24,12 +25,13 @@ public class Player : MonoBehaviour
     private const float maxDrawingTime = 2.7f;
     private float drawingTimeLeft;
 
-    private string inputName;
+    private string inputName = "Horizontal"; // TODO: wywalic
 
     private void Awake()
     {
         head = GetComponentInChildren<Head>();
         tail = GetComponentInChildren<Tail>();
+        powerUpTimerControler = GetComponentInChildren<PowerUpTimerControler>();
     }
 
     private void Start()
@@ -79,8 +81,14 @@ public class Player : MonoBehaviour
         this.inputName = inputName;
     }
 
+    public void AddPowerUpTimer(float duration)
+    {
+        powerUpTimerControler.AddTimer(duration);
+    }
+
     public void ThicknessUp()
     {
+        Debug.Log("Thickness up");
         if (thickness >= 6)
             return;
         thickness += 1;
@@ -89,6 +97,7 @@ public class Player : MonoBehaviour
 
     public void ThicknessDown()
     {
+        Debug.Log("Thickness down");
         if (thickness <= 1)
             return;
         thickness -= 1;
@@ -97,7 +106,8 @@ public class Player : MonoBehaviour
 
     public void SpeedUp()
     {
-        if (speed >= 9)
+        Debug.Log("Speed up");
+        if (speed >= 7)
             return;
         speed += 1;
         UpdateSpeed();
@@ -105,7 +115,8 @@ public class Player : MonoBehaviour
 
     public void SpeedDown()
     {
-        if (speed <= 2)
+        Debug.Log("Speed down");
+        if (speed <= 1)
             return;
         speed -= 1;
         UpdateSpeed();
@@ -113,11 +124,13 @@ public class Player : MonoBehaviour
 
     public void SetImmortality(bool isImmortal)
     {
+        Debug.Log("Immortality " + isImmortal);
         head.SetImmortality(isImmortal);
     }
 
     public void ReverseControls(bool reversed)
     {
+        Debug.Log("reversed " + reversed);
         reverseControls = reversed;
     }
 
