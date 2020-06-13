@@ -4,16 +4,13 @@ using UnityEngine;
 public class PlayerManager : MonoBehaviour
 {
 
-    private List<Player> players;
+    public List<Player> players;
 
     [SerializeField]
     private Player playerPrefab;
 
     [SerializeField]
     private string[] inputNames;
-
-    private float time = 0f;
-    private bool playersStartedDrawing = false;
 
     public static PlayerManager Instance;
 
@@ -37,23 +34,16 @@ public class PlayerManager : MonoBehaviour
         players.Add(player);
     }
 
-    private void Update()
+    public List<Player> GetAllPlayersExcept(Player player)
     {
-        time += Time.deltaTime;
-
-        if (Input.GetKeyDown(KeyCode.Space))
-            AddPlayer();
-
-        if (!playersStartedDrawing && time > 3f)
+        List<Player> others = new List<Player>();
+        foreach(Player p in players)
         {
-            playersStartedDrawing = true;
-
-            for (int i = 0; i < players.Count; i++)
-            {
-                players[i].StartDrawing();
-                players[i].AutoDrawingBreaks(true);
-                players[i].SetImmortality(false);
-            }
+            if (p != player)
+                others.Add(p);
+            else
+                Debug.Log("Rowna sie");
         }
+        return others;
     }
 }

@@ -6,8 +6,8 @@ public class Head : MonoBehaviour
 
     private float angle;
     private float speed;
-    private bool isImmortal;
 
+    private bool isImmortal;
     public float Radius
     {
         get
@@ -24,6 +24,7 @@ public class Head : MonoBehaviour
         float y = speed * Mathf.Sin(angle) * Time.deltaTime;
 
         transform.localPosition += new Vector3(x, y, 0f);
+
     }
 
     public void ChangeColor(Color color)

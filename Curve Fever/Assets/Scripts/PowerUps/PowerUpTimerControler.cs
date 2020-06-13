@@ -17,7 +17,6 @@ public class PowerUpTimerControler : MonoBehaviour
 
     public void AddTimer(float duration)
     {
-        Debug.Log("Timer jest dodawany");
         PowerUpTimer timer = Instantiate(powerUpTimerPrefab, transform).GetComponent<PowerUpTimer>();
         timer.duration = duration;
         timer.radius = head.Radius + powerUpTimers.Count * radiusSpace + 0.05f;

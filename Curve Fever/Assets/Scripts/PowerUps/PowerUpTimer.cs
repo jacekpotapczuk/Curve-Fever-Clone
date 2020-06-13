@@ -48,7 +48,7 @@ public class PowerUpTimer : MonoBehaviour
             x = center.x + radius * Mathf.Cos(t);
             y = center.y + radius * Mathf.Sin(t);
 
-            lineRenderer.SetPosition(i, new Vector3(x, y, 0f));
+            lineRenderer.SetPosition(i, new Vector3(x, y, -0.1f));
         }
     }
 }

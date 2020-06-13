@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class ReverseControls : PowerUpSingle
+public class ReverseControlsSingle : PowerUpSingle
 {
     protected override void StartAction()
     {
