@@ -27,6 +27,8 @@ public class Player : MonoBehaviour
 
     private string inputName = "Horizontal"; // TODO: wywalic
 
+    public string nick;
+
     private void Awake()
     {
         head = GetComponentInChildren<Head>();
@@ -73,8 +75,9 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void SetUp(Vector3 startingPosition, Color headColor, Color tailColor, string inputName)
+    public void SetUp(string nick, Color tailColor, Vector3 startingPosition, Color headColor, string inputName)
     {
+        this.nick = nick;
         head.transform.position = startingPosition;
         head.ChangeColor(headColor);
         tail.ChangeColor(tailColor);

@@ -29,10 +29,13 @@ public class Tail : MonoBehaviour
 
     public void ChangeColor(Color color)
     {
+        Debug.Log("Jestem w changeColor w tail");
+        Debug.Log("Color " + color.ToString());
         this.color = color;
         if (actTailPart != null)
         {
-            actTailPart.GetComponent<LineRenderer>().SetColors(color, color);
+            actTailPart.GetComponent<LineRenderer>().startColor = color;
+            actTailPart.GetComponent<LineRenderer>().endColor = color;
         }
     }
 
@@ -61,7 +64,11 @@ public class Tail : MonoBehaviour
             actTailPart.End(actPosition);
         actTailPart = Instantiate(tailPartPrefab, transform).GetComponent<TailPart>();
         actTailPart.tail = this;
-        actTailPart.GetComponent<LineRenderer>().SetColors(color, color);
+
+        actTailPart.GetComponent<LineRenderer>().startColor = color;
+        Debug.Log("Start color ustawiony na " + color.ToString());
+        actTailPart.GetComponent<LineRenderer>().endColor = color;
+
         actTailPart.SetThickness(size);
         tailParts.Add(actTailPart);
     }

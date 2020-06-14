@@ -3,8 +3,21 @@ using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
 {
+    private class PlayerSpawnInfo
+    {
+        public string nick;
+        public Color color;
+
+        public PlayerSpawnInfo(string nick, Color color)
+        {
+            this.nick = nick;
+            this.color = color;
+        }
+
+    }
 
     public List<Player> players;
+    private List<PlayerSpawnInfo> playersToSpawn;
 
     [SerializeField]
     private Player playerPrefab;
@@ -18,20 +31,30 @@ public class PlayerManager : MonoBehaviour
     {
         Instance = this;
         players = new List<Player>();
+        playersToSpawn = new List<PlayerSpawnInfo>();
 
     }
 
-    public void AddPlayer()
+    public void AddPlayer(string nick, Color color)
     {
         if (players.Count > inputNames.Length - 1)
         {
             Debug.Log("Max " + inputNames.Length + " players. Set up more input names to add more players");
             return;
         }
-            
-        Player player = Instantiate(playerPrefab);
-        player.SetUp(new Vector3(0, 0, 0), Color.white, Color.cyan, inputNames[players.Count]);
-        players.Add(player);
+
+        playersToSpawn.Add(new PlayerSpawnInfo(nick, color));
+    }
+
+    public void SpawnPlayers()
+    {
+        for(int i = 0; i < playersToSpawn.Count; i++)
+        {
+            Player player = Instantiate(playerPrefab);
+
+            player.SetUp(playersToSpawn[i].nick, playersToSpawn[i].color, new Vector3(0, 0, 0), Color.white, inputNames[i]);
+            players.Add(player);
+        }
     }
 
     public List<Player> GetAllPlayersExcept(Player player)

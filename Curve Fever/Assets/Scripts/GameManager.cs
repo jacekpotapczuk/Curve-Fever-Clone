@@ -8,22 +8,27 @@ public class GameManager : MonoBehaviour
 
     private float time = 0f;
     private bool playersStartedDrawing = false;
-
+    private bool playersSpawned = false;
 
     private void Awake()
     {
         Instance = this;
+        Debug.Log("Game Manager zaczął działać");
     }
 
     private void Update()
     {
         time += Time.deltaTime;
 
-        if (Input.GetKeyDown(KeyCode.Space))
-            PlayerManager.Instance.AddPlayer();
         if (Input.GetKeyDown(KeyCode.Q))
             PowerUpManager.Instance.SpawnRandomizedPowerUp();
 
+        if (!playersSpawned && time > 2f)
+        {
+            Debug.Log("Spawning players");
+            playersSpawned = true;
+            PlayerManager.Instance.SpawnPlayers();
+        }
 
         if (!playersStartedDrawing && time > 3f)
         {
