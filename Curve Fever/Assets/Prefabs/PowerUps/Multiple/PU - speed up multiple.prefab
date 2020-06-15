@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8514378806179627706}
   m_Layer: 0
   m_Name: PU - speed up multiple
-  m_TagString: Untagged
+  m_TagString: event
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

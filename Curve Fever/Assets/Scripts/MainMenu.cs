@@ -12,16 +12,11 @@ public class MainMenu : MonoBehaviour
 
     public void StartGame()
     {
-        if(settingsPanel.ValidatePlayers())
+        if (settingsPanel.ValidatePlayers())
         {
-            Debug.Log("Game ready to start");
+
             settingsPanel.AddPlayers();
             SceneManager.LoadScene("Main");
-
-        }
-        else
-        {
-            Debug.Log("Game not ready to start");
         }
     }
 
@@ -29,6 +24,11 @@ public class MainMenu : MonoBehaviour
     {
         playButton.SetActive(false);
         settingsPanel.gameObject.SetActive(true);
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
     }
 
 

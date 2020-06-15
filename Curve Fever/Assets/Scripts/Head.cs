@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Playables;
 
 public class Head : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class Head : MonoBehaviour
     private float speed;
 
     private bool isImmortal;
+    private Player player;
     public float Radius
     {
         get
@@ -16,15 +18,27 @@ public class Head : MonoBehaviour
         }
     }
 
-    public void UpdatePosition(float input)
+    private void Awake()
+    {
+        player = GetComponentInParent<Player>();
+    }
+
+    public void UpdatePosition(float input, bool onlyChangeAngle = false)
     {
         angle -= input * angleChangeSpeed * speed * Time.deltaTime;
+        if (onlyChangeAngle)
+            return;
 
         float x = speed * Mathf.Cos(angle) * Time.deltaTime;
         float y = speed * Mathf.Sin(angle) * Time.deltaTime;
 
         transform.localPosition += new Vector3(x, y, 0f);
 
+    }
+
+    public void SetAngle(float angle)
+    {
+        this.angle = angle;
     }
 
     public void ChangeColor(Color color)
@@ -50,14 +64,12 @@ public class Head : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        //if (isImmortal)
-        //    return;
+        if (collision.tag == "event")
+            return;
+        if (isImmortal)
+            return;
 
-        Debug.Log("Głowa kolizja trigger");
+        player.SetDead();
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        Debug.Log("Głowa kolizja collision");
-    }
 }

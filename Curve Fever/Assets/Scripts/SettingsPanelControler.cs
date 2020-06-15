@@ -40,7 +40,6 @@ public class SettingsPanelControler : MonoBehaviour
 
     public void AddPlayers()
     {
-        Debug.Log("Adding players");
         for (int i = 0; i < playerFields.Length; i++)
         {
             if (playerFields[i].IsActive)

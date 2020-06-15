@@ -1,4 +1,5 @@
 ﻿
+using JetBrains.Annotations;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -10,37 +11,71 @@ public class GameManager : MonoBehaviour
     private bool playersStartedDrawing = false;
     private bool playersSpawned = false;
 
+    private GameStatus gameStatus;
+    private bool preRoundActivated = false;
+
+    public int pointsToWin = 10;
+
     private void Awake()
     {
         Instance = this;
-        Debug.Log("Game Manager zaczął działać");
+        gameStatus = GameStatus.PreRound;
     }
+
 
     private void Update()
     {
         time += Time.deltaTime;
 
-        if (Input.GetKeyDown(KeyCode.Q))
-            PowerUpManager.Instance.SpawnRandomizedPowerUp();
-
-        if (!playersSpawned && time > 2f)
+        if (gameStatus == GameStatus.PreRound && !preRoundActivated)
         {
-            Debug.Log("Spawning players");
-            playersSpawned = true;
+            preRoundActivated = true;
             PlayerManager.Instance.SpawnPlayers();
-        }
-
-        if (!playersStartedDrawing && time > 3f)
-        {
-            playersStartedDrawing = true;
-
-            for (int i = 0; i < PlayerManager.Instance.players.Count; i++)
+            for (int i = 0; i < PlayerManager.Instance.alivePlayers.Count; i++)
             {
-                PlayerManager.Instance.players[i].StartDrawing();
-                PlayerManager.Instance.players[i].AutoDrawingBreaks(true);
-                PlayerManager.Instance.players[i].SetImmortality(false);
+                PlayerManager.Instance.alivePlayers[i].SetImmortality(true);
+                PlayerManager.Instance.alivePlayers[i].SetMovement(false);
+
             }
+            ShowStartCountdown();
         }
+        else if (time >= 3f && gameStatus == GameStatus.PreRound)
+        {
+            gameStatus = GameStatus.Round;
+            for (int i = 0; i < PlayerManager.Instance.alivePlayers.Count; i++)
+            {
+                PlayerManager.Instance.alivePlayers[i].SetImmortality(false);
+                PlayerManager.Instance.alivePlayers[i].SetMovement(true);
+                PlayerManager.Instance.alivePlayers[i].StartDrawing();
+                PlayerManager.Instance.alivePlayers[i].AutoDrawingBreaks(true);
+            }
+            PowerUpManager.Instance.AutoSpawn(true);
+        }
+        else if (gameStatus == GameStatus.Round && PlayerManager.Instance.alivePlayers.Count <= 1)
+        {
+            gameStatus = GameStatus.AfterRound;
+            PowerUpManager.Instance.AutoSpawn(false);
+            PowerUpManager.Instance.ClearPowerUps();
+            PlayerManager.Instance.alivePlayers[0].SetMovement(false);
+
+            Debug.Log("------Koniec rundy-------");
+
+            ShowEndOfRoundInfo();
+            // reset wszystkich rzeczy 
+        }
+
+
     }
+
+    private void ShowStartCountdown()
+    {
+
+    }
+
+    private void ShowEndOfRoundInfo()
+    {
+
+    }
+
 
 }

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8933189932409518912}
   m_Layer: 0
   m_Name: PU - thickness up single
-  m_TagString: Untagged
+  m_TagString: event
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

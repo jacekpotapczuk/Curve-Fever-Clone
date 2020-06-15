@@ -25,9 +25,28 @@ public class Player : MonoBehaviour
     private const float maxDrawingTime = 2.7f;
     private float drawingTimeLeft;
 
-    private string inputName = "Horizontal"; // TODO: wywalic
+    private string inputName;
 
     public string nick;
+
+    private bool isMoving = true;
+
+    private bool isAlive = true;
+
+    public int score = 0;
+    public bool IsAlive
+    {
+        get
+        {
+            return isAlive;
+        }
+    }
+
+    public void SetDead()
+    {
+        isAlive = false;
+        PlayerManager.Instance.SetPlayerDead(this);
+    }
 
     private void Awake()
     {
@@ -49,10 +68,16 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
+        if (!isAlive)
+            return;
         float input = Input.GetAxisRaw(inputName);
         if (reverseControls)
             input = -input;
-        head.UpdatePosition(input);
+        if(isMoving)
+            head.UpdatePosition(input, false);
+        else
+            head.UpdatePosition(input, true);
+
         tail.UpdateTail(head.transform.position);
 
         if (autoDrawingBreaks)
@@ -75,13 +100,14 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void SetUp(string nick, Color tailColor, Vector3 startingPosition, Color headColor, string inputName)
+    public void SetUp(string nick, Color tailColor, Vector3 startingPosition, Color headColor, string inputName, float angle)
     {
         this.nick = nick;
         head.transform.position = startingPosition;
         head.ChangeColor(headColor);
         tail.ChangeColor(tailColor);
         this.inputName = inputName;
+        head.SetAngle(angle);
     }
 
     public void AddPowerUpTimer(float duration)
@@ -89,9 +115,13 @@ public class Player : MonoBehaviour
         powerUpTimerControler.AddTimer(duration);
     }
 
+    public void SetMovement(bool isMoving)
+    {
+        this.isMoving = isMoving;
+    }
+
     public void ThicknessUp()
     {
-        Debug.Log("Thickness up");
         if (thickness >= 6)
             return;
         thickness += 1;
@@ -100,7 +130,6 @@ public class Player : MonoBehaviour
 
     public void ThicknessDown()
     {
-        Debug.Log("Thickness down");
         if (thickness <= 1)
             return;
         thickness -= 1;
@@ -109,7 +138,6 @@ public class Player : MonoBehaviour
 
     public void SpeedUp()
     {
-        Debug.Log("Speed up");
         if (speed >= 7)
             return;
         speed += 1;
@@ -118,7 +146,6 @@ public class Player : MonoBehaviour
 
     public void SpeedDown()
     {
-        Debug.Log("Speed down");
         if (speed <= 1)
             return;
         speed -= 1;
@@ -127,13 +154,11 @@ public class Player : MonoBehaviour
 
     public void SetImmortality(bool isImmortal)
     {
-        Debug.Log("Immortality " + isImmortal);
         head.SetImmortality(isImmortal);
     }
 
     public void ReverseControls(bool reversed)
     {
-        Debug.Log("reversed " + reversed);
         reverseControls = reversed;
     }
 

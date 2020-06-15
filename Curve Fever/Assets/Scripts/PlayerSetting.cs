@@ -55,11 +55,11 @@ public class PlayerSetting : MonoBehaviour
     {
         switch (dropdownField.value)
         {
-            case 0: return new Color(41, 255, 251);
-            case 1: return new Color(134, 255, 105);
-            case 2: return new Color(248, 255, 102);
-            case 3: return new Color(255, 99, 114);
-            case 4: return new Color(255, 94, 247);
+            case 0: return new Color(41f / 255f, 255 / 255f, 251 / 255f);
+            case 1: return new Color(134 / 255f, 255 / 255f, 105 / 255f);
+            case 2: return new Color(248 / 255f, 255 / 255f, 102 / 255f);
+            case 3: return new Color(255 / 255f, 99 / 255f, 114 / 255f);
+            case 4: return new Color(255 / 255f, 94 / 255f, 247 / 255f);
             default: return Color.white;
         }
     }
