@@ -28,11 +28,6 @@ public class PowerUpManager : MonoBehaviour
         spawnedPowerUps = new List<PowerUp>();
     }
 
-    public void AutoSpawn(bool isActive)
-    {
-        autoSpawn = isActive;
-    }
-
     private void Update()
     {
         if (autoSpawn)
@@ -46,6 +41,11 @@ public class PowerUpManager : MonoBehaviour
         }
     }
 
+    public void AutoSpawn(bool isActive)
+    {
+        autoSpawn = isActive;
+    }
+
     public void SpawnRandomizedPowerUp()
     {
         float x = Random.Range(minX, maxX);
@@ -55,9 +55,8 @@ public class PowerUpManager : MonoBehaviour
 
     public void ClearPowerUps()
     {
-        foreach(PowerUp pu in spawnedPowerUps)
+        foreach (PowerUp pu in spawnedPowerUps)
         {
-            Debug.Log("Niszcze PU");
             Destroy(pu.gameObject);
         }
         spawnedPowerUps.Clear();
@@ -67,9 +66,8 @@ public class PowerUpManager : MonoBehaviour
     {
         PowerUp p = Instantiate(powerUp, transform);
         p.transform.position = new Vector3(x, y, 1f);
-        spawnedPowerUps.Add(p); //TODO: odkomentowac
+        spawnedPowerUps.Add(p);
     }
-
 
 
 }

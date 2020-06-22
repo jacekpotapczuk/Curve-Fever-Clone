@@ -9,7 +9,6 @@ public class MainMenu : MonoBehaviour
     [SerializeField]
     private SettingsPanelControler settingsPanel;
 
-
     public void StartGame()
     {
         if (settingsPanel.ValidatePlayers())
@@ -29,7 +28,5 @@ public class MainMenu : MonoBehaviour
     {
         Application.Quit();
     }
-
-
 }
 

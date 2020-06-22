@@ -1,13 +1,12 @@
-﻿
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-
-
-
 
 [RequireComponent(typeof(LineRenderer), typeof(EdgeCollider2D))]
 public class TailPart : MonoBehaviour
 {
+
+    public Tail tail;
+
     private bool isActive = true;
 
     private LineRenderer lineRenderer;
@@ -21,11 +20,8 @@ public class TailPart : MonoBehaviour
     private float minGapLineRenderer = 0.15f;
     private float minGapEdgeCollider = 0.5f;
 
-    public Tail tail;
-
     private void Awake()
     {
-
         lineRenderer = transform.GetComponent<LineRenderer>();
         edgeCollider = transform.GetComponent<EdgeCollider2D>();
 
@@ -46,6 +42,23 @@ public class TailPart : MonoBehaviour
         }
         if (pointsEdgeColliderTemp.Count > 0)
             UpdateEdgeCollider(actPosition);
+    }
+
+    public void End(Vector3 actPosition)
+    {
+        isActive = false;
+
+        pointsLineRenderer.Add(actPosition);
+        lineRenderer.positionCount = pointsLineRenderer.Count;
+        lineRenderer.SetPosition(pointsLineRenderer.Count - 1, pointsLineRenderer[pointsLineRenderer.Count - 1]);
+
+        pointsEdgeColliderTemp.Enqueue(actPosition);
+    }
+
+    public void SetThickness(float size)
+    {
+        lineRenderer.widthMultiplier = size;
+        edgeCollider.edgeRadius = size / 2f;
     }
 
     private void UpdateLineRenderer(Vector3 actPosition)
@@ -89,10 +102,6 @@ public class TailPart : MonoBehaviour
     {
         while (pointsEdgeColliderTemp.Count > 0 && Vector3.Distance(pointsEdgeColliderTemp.Peek(), actPosition) > edgeCollider.edgeRadius + tail.head.Radius + 0.1f) 
         {
-            //Debug.Log("Dodaje w " + gameObject.GetComponent<LineRenderer>().widthMultiplier + 
-             //   " punkt " + actPosition + ", bo odl jest pomiędzy " + pointsEdgeColliderTemp.Peek() + ",a " + actPosition + " wynosi " 
-              //  + Vector3.Distance(pointsEdgeColliderTemp.Peek(), actPosition) + " > " + edgeCollider.edgeRadius + (0.388f));
-
             pointsEdgeCollider.Add(pointsEdgeColliderTemp.Dequeue());
         }
 
@@ -100,20 +109,4 @@ public class TailPart : MonoBehaviour
             edgeCollider.points = pointsEdgeCollider.ToArray();
     }
 
-    public void End(Vector3 actPosition)
-    {
-        isActive = false;
-        
-        pointsLineRenderer.Add(actPosition);
-        lineRenderer.positionCount = pointsLineRenderer.Count;
-        lineRenderer.SetPosition(pointsLineRenderer.Count - 1, pointsLineRenderer[pointsLineRenderer.Count - 1]);
-
-        pointsEdgeColliderTemp.Enqueue(actPosition);
-    }
-
-    public void SetThickness(float size)
-    {
-        lineRenderer.widthMultiplier = size;
-        edgeCollider.edgeRadius = size / 2f;
-    }
 }

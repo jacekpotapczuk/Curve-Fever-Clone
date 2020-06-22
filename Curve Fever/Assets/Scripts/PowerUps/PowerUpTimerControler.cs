@@ -1,19 +1,16 @@
 ﻿using System.Collections.Generic;
-using System.Security.Cryptography;
 using UnityEngine;
 
 public class PowerUpTimerControler : MonoBehaviour
 {
-    private List<PowerUpTimer> powerUpTimers= new List<PowerUpTimer>();
-
-    //private const float radiusFirst = 0.2f; //  distance between the first timer and center
-    private const float radiusSpace = 0.15f; // distance between every next timer
-
     [SerializeField]
     private PowerUpTimer powerUpTimerPrefab;
 
     [SerializeField]
     private Head head;
+
+    private List<PowerUpTimer> powerUpTimers= new List<PowerUpTimer>();
+    private const float radiusSpace = 0.15f; // distance between every next timer
 
     public void AddTimer(float duration)
     {
@@ -28,6 +25,13 @@ public class PowerUpTimerControler : MonoBehaviour
     public void Update()
     {
         UpdatePositions();
+        UpdateRadius();
+    }
+
+    public void RemoveTimer(PowerUpTimer timer)
+    {
+        powerUpTimers.Remove(timer);
+        Destroy(timer);
         UpdateRadius();
     }
 
@@ -50,13 +54,5 @@ public class PowerUpTimerControler : MonoBehaviour
         {
             powerUpTimers[i].radius = head.Radius + i * radiusSpace + 0.05f;
         }
-    }
-
-
-    public void RemoveTimer(PowerUpTimer timer)
-    {
-        powerUpTimers.Remove(timer);
-        Destroy(timer);
-        UpdateRadius();
     }
 }

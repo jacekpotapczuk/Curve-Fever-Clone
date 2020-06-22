@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.Playables;
 
 public class Head : MonoBehaviour
 {
@@ -10,6 +9,7 @@ public class Head : MonoBehaviour
 
     private bool isImmortal;
     private PlayerBody playerBody;
+
     public float Radius
     {
         get
@@ -71,5 +71,4 @@ public class Head : MonoBehaviour
 
         playerBody.SetDead();
     }
-
 }

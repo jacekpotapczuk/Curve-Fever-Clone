@@ -9,8 +9,6 @@ public class SettingsPanelControler : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI errorText;
 
-
-
     private void Start()
     {
         for (int i = 0; i < playerFields.Length; i++)
@@ -18,7 +16,6 @@ public class SettingsPanelControler : MonoBehaviour
             playerFields[i].ChangeText("Player " + (i + 1), Color.white);
         }
     }
-
 
     public bool ValidatePlayers()
     {
@@ -35,7 +32,6 @@ public class SettingsPanelControler : MonoBehaviour
             errorText.text = "Not enough players. Activate at least two.";
             return false;
         }
-        
     }
 
     public void AddPlayers()

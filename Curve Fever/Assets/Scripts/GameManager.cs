@@ -1,6 +1,4 @@
-﻿
-using JetBrains.Annotations;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -14,7 +12,6 @@ public class GameManager : MonoBehaviour
 
     private float betweenRoundsBreakTime = 3f;
     private float betweenRoundsBreakTimeLeft;
-
     private float roundStartWaitTime = 4f;
     private float roundStartWaitTimeLeft;
 
@@ -41,98 +38,115 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-
         if (gameStatus == GameStatus.Initialization)
-        {
-            endGameScreen.SetActive(false);
-            gameStatus = GameStatus.PreRoundWaiting;
-            roundStartWaitTimeLeft = roundStartWaitTime;
-
-            PlayerManager.Instance.SpawnPlayers();
-            foreach(Player p in PlayerManager.Instance.players)
-            {
-                p.body.SetImmortality(true);
-                p.body.SetMovement(false);
-            }
-            ScoreRankingController.Instance.OnNewRound();
-        }
+            HandleRoundInitialization();
         else if (gameStatus == GameStatus.PreRoundWaiting)
+            HandlePreRoundWaiting();
+        else if (gameStatus == GameStatus.PreRound)
+            HandlePreRound();
+        else if (gameStatus == GameStatus.Round && PlayerManager.Instance.alivePlayers.Count <= 1)
+            HandleRoundEnd();
+        else if (gameStatus == GameStatus.AfterRound)
+            HandleAfterRound();
+        else if (gameStatus == GameStatus.End)
+            HandleGameEnd();
+    }
+
+    private void HandleRoundInitialization()
+    {
+        endGameScreen.SetActive(false);
+        gameStatus = GameStatus.PreRoundWaiting;
+        roundStartWaitTimeLeft = roundStartWaitTime;
+
+        PlayerManager.Instance.SpawnPlayers();
+        foreach (Player p in PlayerManager.Instance.players)
         {
-            roundStartWaitTimeLeft -= Time.deltaTime;
-            if (roundStartWaitTimeLeft >= 0)
+            p.body.SetImmortality(true);
+            p.body.SetMovement(false);
+        }
+        ScoreRankingController.Instance.OnNewRound();
+    }
+
+    private void HandlePreRoundWaiting()
+    {
+        roundStartWaitTimeLeft -= Time.deltaTime;
+        if (roundStartWaitTimeLeft >= 0)
+        {
+            countdownText.gameObject.SetActive(true);
+            if (roundStartWaitTimeLeft <= 1f)
             {
-                countdownText.gameObject.SetActive(true);
-                if (roundStartWaitTimeLeft <= 1f)
-                {
-                    countdownText.text = "GO";
-                }
-                else
-                {
-                    int timeLeft = Mathf.FloorToInt(roundStartWaitTimeLeft);
-                    countdownText.text = timeLeft.ToString();
-                }
+                countdownText.text = "GO";
             }
             else
             {
-                countdownText.gameObject.SetActive(false);
-                gameStatus = GameStatus.PreRound;
+                int timeLeft = Mathf.FloorToInt(roundStartWaitTimeLeft);
+                countdownText.text = timeLeft.ToString();
             }
         }
-        else if (gameStatus == GameStatus.PreRound)
+        else
         {
-            gameStatus = GameStatus.Round;
+            countdownText.gameObject.SetActive(false);
+            gameStatus = GameStatus.PreRound;
+        }
+    }
 
-            foreach (Player p in PlayerManager.Instance.players)
+    private void HandlePreRound()
+    {
+        gameStatus = GameStatus.Round;
+
+        foreach (Player p in PlayerManager.Instance.players)
+        {
+            p.body.SetImmortality(false);
+            p.body.SetMovement(true);
+            p.body.StartDrawing();
+            p.body.AutoDrawingBreaks(true);
+        }
+        PowerUpManager.Instance.AutoSpawn(true);
+    }
+
+    private void HandleRoundEnd()
+    {
+        gameStatus = GameStatus.AfterRound;
+        PowerUpManager.Instance.AutoSpawn(false);
+        PowerUpManager.Instance.ClearPowerUps();
+        PlayerManager.Instance.alivePlayers[0].body.SetMovement(false);
+
+        roundWinnerText.gameObject.SetActive(true);
+        roundWinnerText.text = PlayerManager.Instance.alivePlayers[0].nick + " WON THE ROUND";
+
+        betweenRoundsBreakTimeLeft = betweenRoundsBreakTime;
+    }
+    
+    private void HandleAfterRound()
+    {
+        betweenRoundsBreakTimeLeft -= Time.deltaTime;
+        if (betweenRoundsBreakTimeLeft <= 0f)
+        {
+            bool gameFinsished = false;
+            foreach (Player player in PlayerManager.Instance.players)
             {
-                p.body.SetImmortality(false);
-                p.body.SetMovement(true);
-                p.body.StartDrawing();
-                p.body.AutoDrawingBreaks(true);
+                if (player.score >= scoreToWin)
+                {
+                    gameFinsished = true; // later: add check if there is a draw
+                    break;
+                }
             }
-            PowerUpManager.Instance.AutoSpawn(true);
-        }
-        else if (gameStatus == GameStatus.Round && PlayerManager.Instance.alivePlayers.Count <= 1)
-        {
-            gameStatus = GameStatus.AfterRound;
-            PowerUpManager.Instance.AutoSpawn(false);
-            PowerUpManager.Instance.ClearPowerUps();
-            PlayerManager.Instance.alivePlayers[0].body.SetMovement(false);
-
-            roundWinnerText.gameObject.SetActive(true);
-            roundWinnerText.text = PlayerManager.Instance.alivePlayers[0].nick + " WON THE ROUND";
-
-            betweenRoundsBreakTimeLeft = betweenRoundsBreakTime;
-        }
-        else if (gameStatus == GameStatus.AfterRound)
-        {
-            betweenRoundsBreakTimeLeft -= Time.deltaTime;
-            if (betweenRoundsBreakTimeLeft <= 0f)
+            roundWinnerText.gameObject.SetActive(false);
+            if (gameFinsished)
+                gameStatus = GameStatus.End;
+            else
             {
-                bool gameFinsished = false;
-                foreach(Player player in PlayerManager.Instance.players)
-                {
-                    if (player.score >= scoreToWin)
-                    {
-                        gameFinsished = true; // later: add check if there is a draw
-                        break;
-                    }
-                }
-                roundWinnerText.gameObject.SetActive(false);
-                if (gameFinsished)
-                    gameStatus = GameStatus.End;
-                else
-                {
-                    PlayerManager.Instance.DespawnPlayers();
-                    gameStatus = GameStatus.Initialization;
-                }
+                PlayerManager.Instance.DespawnPlayers();
+                gameStatus = GameStatus.Initialization;
             }
         }
-        else if (gameStatus == GameStatus.End)
-        {
-            endGameScreen.GetComponentInChildren<TextMeshProUGUI>().text = PlayerManager.Instance.players[0].nick.ToString() + " WON THE GAME!";
-            endGameScreen.GetComponentInChildren<TextMeshProUGUI>().color = PlayerManager.Instance.players[0].color;
-            endGameScreen.SetActive(true);
-        }
+    }
+
+    private void HandleGameEnd()
+    {
+        endGameScreen.GetComponentInChildren<TextMeshProUGUI>().text = PlayerManager.Instance.players[0].nick.ToString() + " WON THE GAME!";
+        endGameScreen.GetComponentInChildren<TextMeshProUGUI>().color = PlayerManager.Instance.players[0].color;
+        endGameScreen.SetActive(true);
     }
 
     public void ExitGame()
@@ -144,5 +158,4 @@ public class GameManager : MonoBehaviour
     {
         SceneManager.LoadScene("Menu");
     }
-
 }

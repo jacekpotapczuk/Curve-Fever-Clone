@@ -1,6 +1,4 @@
-﻿
-
-public enum GameStatus
+﻿public enum GameStatus
 {
     Initialization,
     PreRoundWaiting,

@@ -18,7 +18,6 @@ public class ScoreRankingController : MonoBehaviour
 
     private Dictionary<Player, ScoreEntry> entries;
     private float inActiveMultiplayer = 0.65f;
-
     private Vector2 anchorPosition;
     private float templateHeight = 38f;
 

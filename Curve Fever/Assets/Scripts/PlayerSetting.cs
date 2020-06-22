@@ -1,5 +1,4 @@
-﻿
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,6 +17,7 @@ public class PlayerSetting : MonoBehaviour
             return isActive;
         }
     }
+
     private void Awake()
     {
         nameInputField = GetComponentInChildren<TMP_InputField>();
@@ -37,7 +37,6 @@ public class PlayerSetting : MonoBehaviour
             nameInputField.textComponent.alpha = 1f;
         else
             nameInputField.textComponent.alpha = 0.5f;
-
     }
 
     public void ChangeText(string text, Color color)

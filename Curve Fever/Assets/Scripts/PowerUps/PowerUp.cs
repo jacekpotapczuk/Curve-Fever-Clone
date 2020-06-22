@@ -16,7 +16,4 @@ public abstract class PowerUp : MonoBehaviour
         GetComponent<SpriteRenderer>().enabled = false;
         GetComponent<CircleCollider2D>().enabled = false;
     }
-
-
-
 }

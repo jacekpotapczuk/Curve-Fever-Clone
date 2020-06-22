@@ -16,5 +16,4 @@ public class Player
         this.inputName = inputName;
         this.score = score;
     }
-
 }

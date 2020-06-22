@@ -2,6 +2,7 @@
 
 public class PlayerBody : MonoBehaviour
 {
+
     private Player player;
     private Head head;
     private Tail tail;
@@ -28,7 +29,6 @@ public class PlayerBody : MonoBehaviour
 
     private string inputName;
 
-    public string nick;
 
     private bool isMoving = true;
 
@@ -84,25 +84,8 @@ public class PlayerBody : MonoBehaviour
             HandleAutoDrawingBreaks();
     }
 
-    private void HandleAutoDrawingBreaks()
+    public void SetUp(Color tailColor, Vector3 startingPosition, Color headColor, string inputName, float angle, Player player)
     {
-        if (isDrawingTail)
-        {
-            drawingTimeLeft -= Time.deltaTime;
-            if (drawingTimeLeft < 0)
-                StopDrawing();
-        }
-        else
-        {
-            noDrawingTimeLeft -= Time.deltaTime;
-            if (noDrawingTimeLeft < 0)
-                StartDrawing();
-        }
-    }
-
-    public void SetUp(string nick, Color tailColor, Vector3 startingPosition, Color headColor, string inputName, float angle, Player player)
-    {
-        this.nick = nick;
         head.transform.position = startingPosition;
         head.ChangeColor(headColor);
         tail.ChangeColor(tailColor);
@@ -163,17 +146,6 @@ public class PlayerBody : MonoBehaviour
         reverseControls = reversed;
     }
 
-    private void UpdateSpeed()
-    {
-        head.SetSpeed(speed * speedRatio);
-    }
-
-    private void UpdateThickness()
-    {
-        tail.ChangeThickness(head.transform.position, thickness * thicknessRatioLineRenderer);
-        head.ChangeThickness(thickness * thicknessRatioHead);
-    }
-
     public void StartDrawing()
     {
         tail.StartDrawing(head.transform.position);
@@ -189,7 +161,6 @@ public class PlayerBody : MonoBehaviour
 
         noDrawingTimeLeft = Random.Range(minNoDrawingTime, maxNoDrawingTime);
     }
-
     public void AutoDrawingBreaks(bool isActive)
     {
         if (isActive)
@@ -200,6 +171,32 @@ public class PlayerBody : MonoBehaviour
         {
             autoDrawingBreaks = false;
         }
+    }
 
+    private void HandleAutoDrawingBreaks()
+    {
+        if (isDrawingTail)
+        {
+            drawingTimeLeft -= Time.deltaTime;
+            if (drawingTimeLeft < 0)
+                StopDrawing();
+        }
+        else
+        {
+            noDrawingTimeLeft -= Time.deltaTime;
+            if (noDrawingTimeLeft < 0)
+                StartDrawing();
+        }
+    }
+
+    private void UpdateSpeed()
+    {
+        head.SetSpeed(speed * speedRatio);
+    }
+
+    private void UpdateThickness()
+    {
+        tail.ChangeThickness(head.transform.position, thickness * thicknessRatioLineRenderer);
+        head.ChangeThickness(thickness * thicknessRatioHead);
     }
 }

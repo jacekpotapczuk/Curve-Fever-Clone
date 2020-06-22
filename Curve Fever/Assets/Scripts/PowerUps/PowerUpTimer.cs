@@ -5,18 +5,16 @@ using UnityEngine;
 [RequireComponent(typeof(LineRenderer))]
 public class PowerUpTimer : MonoBehaviour
 {
-
-    private LineRenderer lineRenderer;
+    public float duration = 10f;
+    public float radius = 1f;
+    public Vector2 center = new Vector2(0f, 0f);
+    public PowerUpTimerControler controler;
 
     private const int numberOfSteps = 50;
 
-    public float duration = 10f;
+    private LineRenderer lineRenderer;
     private float durationLeft;
 
-    public float radius = 1f;
-    public Vector2 center = new Vector2(0f, 0f);
-
-    public PowerUpTimerControler controler;
 
     private void Awake()
     {

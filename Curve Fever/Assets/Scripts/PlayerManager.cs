@@ -28,7 +28,6 @@ public class PlayerManager : MonoBehaviour
         players.Add(new Player(nick, color, inputNames[players.Count]));
     }
 
-
     public void SpawnPlayers()
     {
         foreach(Player p in players)
@@ -39,7 +38,7 @@ public class PlayerManager : MonoBehaviour
             float y = Random.Range(-2f, 2f);
             float angle = Random.Range(0f, 2 * Mathf.PI);
 
-            pb.SetUp(p.nick, p.color, new Vector3(x, y, 0f), p.color, p.inputName, angle, p);
+            pb.SetUp(p.color, new Vector3(x, y, 0f), p.color, p.inputName, angle, p);
             p.body = pb;
             alivePlayers.Add(p);
         }
