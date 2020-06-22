@@ -6,7 +6,7 @@ public class ThicknessUpSingle : PowerUpSingle
     protected override void StartAction()
     {
         DisableVisuals();
-        player.ThicknessUp();
+        playerBody.ThicknessUp();
         StartCoroutine(EndAction());
     }
 
@@ -14,7 +14,7 @@ public class ThicknessUpSingle : PowerUpSingle
     {
         yield return new WaitForSeconds(duration);
 
-        player.ThicknessDown();
+        playerBody.ThicknessDown();
         Destroy(gameObject);
     }
 }

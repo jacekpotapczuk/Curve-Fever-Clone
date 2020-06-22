@@ -3,90 +3,82 @@ using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
 {
-    private class PlayerSpawnInfo
-    {
-        public string nick;
-        public Color color;
+    public static PlayerManager Instance;
 
-        public PlayerSpawnInfo(string nick, Color color)
-        {
-            this.nick = nick;
-            this.color = color;
-        }
-
-    }
-
+    public List<Player> players;
     public List<Player> alivePlayers;
-    private List<PlayerSpawnInfo> playersToSpawn;
 
     [SerializeField]
-    private Player playerPrefab;
+    PlayerBody playerBodyPrefab;
 
     [SerializeField]
     private string[] inputNames;
 
-    public static PlayerManager Instance;
-
     private void Awake()
     {
         Instance = this;
+        players = new List<Player>();
         alivePlayers = new List<Player>();
-        playersToSpawn = new List<PlayerSpawnInfo>();
-
     }
 
     public void AddPlayer(string nick, Color color)
     {
-        if (alivePlayers.Count > inputNames.Length - 1)
-        {
-            Debug.Log("Max " + inputNames.Length + " players. Set up more input names to add more players");
-            return;
-        }
-
-        playersToSpawn.Add(new PlayerSpawnInfo(nick, color));
+        if (players.Count >= inputNames.Length)
+            Debug.LogError("Can't add more players. No input axes left.");
+        players.Add(new Player(nick, color, inputNames[players.Count]));
     }
 
-    public void SetPlayerDead(Player player)
+
+    public void SpawnPlayers()
+    {
+        foreach(Player p in players)
+        {
+            PlayerBody pb = Instantiate(playerBodyPrefab);
+
+            float x = Random.Range(-8f, 0f);
+            float y = Random.Range(-2f, 2f);
+            float angle = Random.Range(0f, 2 * Mathf.PI);
+
+            pb.SetUp(p.nick, p.color, new Vector3(x, y, 0f), p.color, p.inputName, angle, p);
+            p.body = pb;
+            alivePlayers.Add(p);
+        }
+    }
+
+    public void DespawnPlayers()
+    {
+        foreach(Player p in players)
+        {
+            Destroy(p.body.gameObject);
+        }
+        alivePlayers.Clear();
+    }
+
+    public void OnPlayerDead(Player player)
     {
         int indexToRemove = -1;
         for (int i = 0; i < alivePlayers.Count; i++)
         {
             if (alivePlayers[i] == player)
+            {
                 indexToRemove = i;
+            }
             else
-                player.score += 1;
+            {
+                alivePlayers[i].score += 1;
+            }
         }
         alivePlayers.RemoveAt(indexToRemove);
-        Debug.Assert(indexToRemove != -1, "Player " + player.nick + " already dead.");
-
-        //TODO: innym rozdać punkty
-
-
-
-        
+        ScoreRankingController.Instance.OnPlayerDead(player);
     }
 
-    public void SpawnPlayers()
+    public List<PlayerBody> GetAllPlayerBodiesExcept(PlayerBody playerBody)
     {
-        for(int i = 0; i < playersToSpawn.Count; i++)
+        List<PlayerBody> others = new List<PlayerBody>();
+        foreach (Player p in alivePlayers)
         {
-            Player player = Instantiate(playerPrefab);
-
-            float x = Random.Range(-10f, -2f);
-            float y = Random.Range(-4f, 4f);
-            float angle = Random.Range(0f, 2 * Mathf.PI);
-            player.SetUp(playersToSpawn[i].nick, playersToSpawn[i].color, new Vector3(x, y, 0), playersToSpawn[i].color, inputNames[i], angle);
-            alivePlayers.Add(player);
-        }
-    }
-
-    public List<Player> GetAllPlayersExcept(Player player)
-    {
-        List<Player> others = new List<Player>();
-        foreach(Player p in alivePlayers)
-        {
-            if (p != player)
-                others.Add(p);
+            if (p.body != playerBody)
+                others.Add(p.body);
         }
         return others;
     }

@@ -4,15 +4,15 @@ using UnityEngine;
 public abstract class PowerUpSingle : PowerUp
 {
 
-    protected Player player;
+    protected PlayerBody playerBody;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Player")
         {
-            player = collision.GetComponentInParent<Player>();
+            playerBody = collision.GetComponentInParent<PlayerBody>();
             StartAction();
-            player.AddPowerUpTimer(duration);
+            playerBody.AddPowerUpTimer(duration);
         }
     }
 }

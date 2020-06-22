@@ -1430,10 +1430,10 @@ RectTransform:
   m_Father: {fileID: 1402319805}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -44.000122}
-  m_SizeDelta: {x: -1247.03, y: -823.01}
+  m_AnchorMin: {x: 0.5, y: 0.9017795}
+  m_AnchorMax: {x: 0.5, y: 0.9017795}
+  m_AnchoredPosition: {x: 0.5, y: -477.50012}
+  m_SizeDelta: {x: 673.97, y: 255.98999}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &448075124
 MonoBehaviour:
@@ -1771,8 +1771,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d998dea9a9009b41a2a9df4f8eff51e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  players: []
-  playerPrefab: {fileID: 2435244000568565870, guid: 25b3269d3923d924a9acb1024a867eec,
+  playerBodyPrefab: {fileID: 2435244000568565870, guid: 25b3269d3923d924a9acb1024a867eec,
     type: 3}
   inputNames:
   - Horizontal1
@@ -1925,7 +1924,7 @@ MonoBehaviour:
   m_CharacterValidation: 0
   m_RegexValue: 
   m_GlobalPointSize: 14
-  m_CharacterLimit: 15
+  m_CharacterLimit: 10
   m_OnEndEdit:
     m_PersistentCalls:
       m_Calls: []
@@ -4717,7 +4716,7 @@ MonoBehaviour:
   m_CharacterValidation: 0
   m_RegexValue: 
   m_GlobalPointSize: 14
-  m_CharacterLimit: 15
+  m_CharacterLimit: 10
   m_OnEndEdit:
     m_PersistentCalls:
       m_Calls: []
@@ -5500,7 +5499,7 @@ MonoBehaviour:
   m_CharacterValidation: 0
   m_RegexValue: 
   m_GlobalPointSize: 14
-  m_CharacterLimit: 15
+  m_CharacterLimit: 10
   m_OnEndEdit:
     m_PersistentCalls:
       m_Calls: []
@@ -6979,7 +6978,7 @@ MonoBehaviour:
   m_CharacterValidation: 0
   m_RegexValue: 
   m_GlobalPointSize: 14
-  m_CharacterLimit: 15
+  m_CharacterLimit: 10
   m_OnEndEdit:
     m_PersistentCalls:
       m_Calls: []

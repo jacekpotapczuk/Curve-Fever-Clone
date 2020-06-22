@@ -6,7 +6,7 @@ public class ReverseControlsSingle : PowerUpSingle
     protected override void StartAction()
     {
         DisableVisuals();
-        player.ReverseControls(true);
+        playerBody.ReverseControls(true);
         StartCoroutine(EndAction());
     }
 
@@ -14,7 +14,7 @@ public class ReverseControlsSingle : PowerUpSingle
     {
         yield return new WaitForSeconds(duration);
 
-        player.ReverseControls(false);
+        playerBody.ReverseControls(false);
         Destroy(gameObject);
     }
 }

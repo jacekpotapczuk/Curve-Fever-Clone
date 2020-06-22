@@ -8,7 +8,7 @@ public class SpeedUpSingle : PowerUpSingle
     protected override void StartAction()
     {
         DisableVisuals();
-        player.SpeedUp();
+        playerBody.SpeedUp();
         StartCoroutine(EndAction());
     }
 
@@ -16,7 +16,7 @@ public class SpeedUpSingle : PowerUpSingle
     {
         yield return new WaitForSeconds(duration);
 
-        player.SpeedDown();
+        playerBody.SpeedDown();
         Destroy(gameObject);
     }
 

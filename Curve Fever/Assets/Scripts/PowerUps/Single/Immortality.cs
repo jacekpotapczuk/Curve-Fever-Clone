@@ -6,7 +6,7 @@ public class Immortality : PowerUpSingle
     protected override void StartAction()
     {
         DisableVisuals();
-        player.SetImmortality(true);
+        playerBody.SetImmortality(true);
         StartCoroutine(EndAction());
     }
 
@@ -14,7 +14,7 @@ public class Immortality : PowerUpSingle
     {
         yield return new WaitForSeconds(duration);
 
-        player.SetImmortality(false);
+        playerBody.SetImmortality(false);
         Destroy(gameObject);
     }
 }

@@ -7,7 +7,7 @@ public class SpeedUpMultiple : PowerUpMultiple
     protected override void StartAction()
     {
         DisableVisuals();
-        foreach(Player p in players)
+        foreach(PlayerBody p in playerBodies)
         {
             p.SpeedUp();
         }
@@ -18,7 +18,7 @@ public class SpeedUpMultiple : PowerUpMultiple
     {
         yield return new WaitForSeconds(duration);
 
-        foreach (Player p in players)
+        foreach (PlayerBody p in playerBodies)
         {
             p.SpeedDown();
         }

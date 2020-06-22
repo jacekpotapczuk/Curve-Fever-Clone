@@ -7,7 +7,7 @@ public class ReverseControlsMultiple : PowerUpMultiple
     protected override void StartAction()
     {
         DisableVisuals();
-        foreach(Player p in players)
+        foreach(PlayerBody p in playerBodies)
         {
             p.ReverseControls(true);
         }
@@ -18,7 +18,7 @@ public class ReverseControlsMultiple : PowerUpMultiple
     {
         yield return new WaitForSeconds(duration);
 
-        foreach (Player p in players)
+        foreach (PlayerBody p in playerBodies)
         {
             p.ReverseControls(false);
         }

@@ -3,13 +3,13 @@ using UnityEngine.Playables;
 
 public class Head : MonoBehaviour
 {
-    private float angleChangeSpeed = 0.5f;
+    private float angleChangeSpeed = 0.7f;
 
     private float angle;
     private float speed;
 
     private bool isImmortal;
-    private Player player;
+    private PlayerBody playerBody;
     public float Radius
     {
         get
@@ -20,7 +20,7 @@ public class Head : MonoBehaviour
 
     private void Awake()
     {
-        player = GetComponentInParent<Player>();
+        playerBody = GetComponentInParent<PlayerBody>();
     }
 
     public void UpdatePosition(float input, bool onlyChangeAngle = false)
@@ -69,7 +69,7 @@ public class Head : MonoBehaviour
         if (isImmortal)
             return;
 
-        player.SetDead();
+        playerBody.SetDead();
     }
 
 }

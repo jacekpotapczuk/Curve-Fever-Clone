@@ -14,7 +14,6 @@ public class MainMenu : MonoBehaviour
     {
         if (settingsPanel.ValidatePlayers())
         {
-
             settingsPanel.AddPlayers();
             SceneManager.LoadScene("Main");
         }
