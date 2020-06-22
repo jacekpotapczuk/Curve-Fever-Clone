@@ -36,8 +36,6 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         scoreToWin = PlayerManager.Instance.players.Count * PlayerManager.Instance.players.Count * 2;
-        scoreToWin = 5; //TODO: wywalic
-
         ScoreRankingController.Instance.SetMaxScore(scoreToWin);
     }
 
